@@ -1,0 +1,41 @@
+package io.cinema.msnotifications.strategy.impl;
+
+import io.cinema.domain.enumerated.CinemaExceptionTypes;
+import io.cinema.domain.exceptions.CinemaException;
+import io.cinema.msnotifications.domain.dto.NotificationDTO;
+import io.cinema.msnotifications.domain.enumerated.NotificationProvider;
+import io.cinema.msnotifications.service.EmailService;
+import io.cinema.msnotifications.strategy.NotificationProviderStrategy;
+import io.cinema.msnotifications.util.TemplateUtil;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+@Slf4j
+@Component
+@RequiredArgsConstructor
+public class NotificationProviderStrategyImpl implements NotificationProviderStrategy {
+    private final EmailService emailService;
+
+    @Override
+    public NotificationProvider getNotificationProvider() {
+        return NotificationProvider.GOOGLE;
+    }
+
+    @Override
+    public void send(NotificationDTO notification) {
+        log.info("Sending notification via GOOGLE to: {}", notification.recipient());
+
+        String template = notification.notificationType() + ".mustache";
+        String message = TemplateUtil.buildTemplate(template, notification.templateModel());
+
+        try {
+            emailService.sendEmail(notification.recipient(), notification.subject(), message);
+        } catch (Exception e) {
+            throw new CinemaException(
+                    "Something went wrong while sending the email: " + e.getMessage(),
+                    CinemaExceptionTypes.TECHNICAL_ERROR
+            );
+        }
+    }
+}

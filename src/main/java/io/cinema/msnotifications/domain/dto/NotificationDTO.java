@@ -8,6 +8,8 @@ public record NotificationDTO(
         String notificationId,
         String notificationType,
 
+        String subject,
+
         NotificationProvider provider,
 
         String recipient,
