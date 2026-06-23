@@ -1,0 +1,16 @@
+package io.cinema.msnotifications.config;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+@Getter
+@Setter
+@Component
+@NoArgsConstructor
+@ConfigurationProperties("cinema.notifications.email")
+public class EmailProperties {
+    private String senderEmail;
+}

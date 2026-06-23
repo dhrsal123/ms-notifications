@@ -10,6 +10,7 @@ import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 import io.cinema.domain.enumerated.CinemaExceptionTypes;
 import io.cinema.domain.exceptions.CinemaException;
+import io.cinema.msnotifications.config.EmailProperties;
 import io.cinema.msnotifications.service.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
@@ -29,6 +30,7 @@ import java.util.Properties;
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
     private static final String APPLICATION_NAME = "cinema-notifications";
+    private final EmailProperties emailProperties;
 
     @Override
     public void sendEmail(
@@ -38,7 +40,9 @@ public class EmailServiceImpl implements EmailService {
     ) throws MessagingException, IOException {
 
         GoogleCredentials credentials = GoogleCredentials.getApplicationDefault()
-                .createScoped(GmailScopes.GMAIL_SEND);
+                .createScoped(GmailScopes.GMAIL_SEND)
+                .createDelegated(emailProperties.getSenderEmail());
+
         HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(credentials);
 
         Gmail service = new Gmail.Builder(
