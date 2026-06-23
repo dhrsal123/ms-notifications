@@ -19,7 +19,7 @@ import static io.cinema.domain.enumerated.CinemaExceptionTypes.TECHNICAL_ERROR;
 @Component
 @RequiredArgsConstructor
 public class TemplateEngine {
-    private static final String TEMPLATES_BASE_PATH = "templates/";
+    private static final String TEMPLATES_BASE_PATH = "classpath:templates/";
     private final ResourceLoader resourceLoader;
     private final Mustache.Compiler mustacheCompiler;
 
