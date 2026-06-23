@@ -76,3 +76,11 @@ resilience4j:
     instances:
       externalApiTimeout:
         timeoutDuration: 4s
+
+cinema:
+  notifications:
+    email:
+      sender-email: "support@cinema.io"
+
+server:
+  port: 8081
