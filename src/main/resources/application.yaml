@@ -80,7 +80,8 @@ resilience4j:
 cinema:
   notifications:
     email:
-      sender-email: "support@cinema.io"
+      credentials-file-path: ${CRED_FILE}
+      sender-email: ${SENDER_EMAIL}
 
 server:
   port: 8081

@@ -12,5 +12,6 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @ConfigurationProperties("cinema.notifications.email")
 public class EmailProperties {
+    private String credentialsFilePath;
     private String senderEmail;
 }
