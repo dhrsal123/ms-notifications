@@ -33,6 +33,8 @@ public class NotificationProviderStrategyImpl implements NotificationProviderStr
         try {
             emailService.sendEmail(notification.recipient(), notification.subject(), message);
         } catch (Exception e) {
+            log.error("Something went wrong while sending the email: {}", e.getMessage());
+
             throw new CinemaException(
                     "Something went wrong while sending the email: " + e.getMessage(),
                     CinemaExceptionTypes.TECHNICAL_ERROR
