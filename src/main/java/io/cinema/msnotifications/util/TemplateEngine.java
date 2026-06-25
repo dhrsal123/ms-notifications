@@ -28,25 +28,25 @@ public class TemplateEngine {
             Map<String, Object> variables
     ) {
         var cleanName = templateName.startsWith("/") ? templateName.substring(1) : templateName;
+        var fullPath = TEMPLATES_BASE_PATH + cleanName;
 
-        Resource resource = resourceLoader.getResource(TEMPLATES_BASE_PATH + cleanName);
+        Resource resource = resourceLoader.getResource(fullPath);
 
         if (!resource.exists()) {
-            throw new IllegalArgumentException("Template file not found at path: " + TEMPLATES_BASE_PATH + cleanName);
+            throw new CinemaException("Template file not found at path: " + fullPath, TECHNICAL_ERROR);
         }
 
         StringWriter writer = new StringWriter();
 
         try (Reader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8)) {
-            var template = mustacheCompiler
-                    .compile(reader);
-
+            var template = mustacheCompiler.compile(reader);
             template.execute(variables, writer);
 
             return writer.toString();
         } catch (IOException e) {
             throw new CinemaException(
-                    "Error reading template: " + templateName + " Error: " + e.getMessage(), TECHNICAL_ERROR
+                    "Error reading template: " + templateName + " Error: " + e.getMessage(),
+                    TECHNICAL_ERROR
             );
         }
     }
