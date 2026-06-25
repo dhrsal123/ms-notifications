@@ -76,3 +76,12 @@ resilience4j:
     instances:
       externalApiTimeout:
         timeoutDuration: 4s
+
+cinema:
+  notifications:
+    email:
+      credentials-file-path: ${CRED_FILE}
+      sender-email: ${SENDER_EMAIL}
+
+server:
+  port: 8081

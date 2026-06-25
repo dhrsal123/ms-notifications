@@ -6,14 +6,12 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import java.time.Duration;
-
 @Getter
 @Setter
 @Component
 @NoArgsConstructor
-@ConfigurationProperties(prefix = "cinema-client-configs")
-public class WebClientProperties {
-    private int maxRetries;
-    private Duration timeBetweenRetries;
+@ConfigurationProperties("cinema.notifications.email")
+public class EmailProperties {
+    private String credentialsFilePath;
+    private String senderEmail;
 }

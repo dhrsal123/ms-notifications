@@ -4,10 +4,12 @@ import io.cinema.msnotifications.domain.dto.NotificationDTO;
 import io.cinema.msnotifications.domain.enumerated.NotificationProvider;
 import io.cinema.msnotifications.service.NotificationService;
 import io.cinema.msnotifications.strategy.NotificationProviderStrategy;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@Validated
 public class NotificationServiceImpl implements NotificationService {
     private final Map<NotificationProvider, NotificationProviderStrategy> strategies;
 
@@ -34,7 +37,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     @RabbitListener(queues = "${notifications-rmq.queueName}")
-    public void sendNotification(NotificationDTO notification) {
+    public void sendNotification(@Valid NotificationDTO notification) {
         log.info("Received notification event: {}", notification);
 
         var strategy = strategies.get(notification.provider());
