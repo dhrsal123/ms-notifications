@@ -8,7 +8,6 @@ import io.cinema.msnotifications.service.impl.EmailServiceImpl;
 import jakarta.mail.Session;
 import jakarta.mail.internet.MimeMessage;
 import lombok.SneakyThrows;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Answers;
@@ -24,7 +23,7 @@ import java.util.Base64;
 import java.util.Properties;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -76,7 +75,7 @@ class EmailServiceImplTest {
         assertThat(mimeMessage.getRecipients(jakarta.mail.Message.RecipientType.TO)[0]).hasToString(to);
 
         Object messageContent = mimeMessage.getContent();
-        String actualBody = "";
+        String actualBody;
 
         if (messageContent instanceof java.io.InputStream inputStream) {
             actualBody = new String(inputStream.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
@@ -102,8 +101,9 @@ class EmailServiceImplTest {
                 .thenThrow(new IOException("Test exception."));
 
         // act & assert
-        var error = Assertions.assertThrows(CinemaException.class, () -> emailService.sendEmail(to, subject, content));
-        assertEquals("Something went wrong: Test exception.", error.getMessage());
+        assertThatThrownBy(() -> emailService.sendEmail(to, subject, content))
+                .isInstanceOf(CinemaException.class)
+                .hasMessage("Something went wrong: Test exception.");
 
     }
 

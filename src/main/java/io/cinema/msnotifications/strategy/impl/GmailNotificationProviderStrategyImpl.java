@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class NotificationProviderStrategyImpl implements NotificationProviderStrategy {
+public class GmailNotificationProviderStrategyImpl implements NotificationProviderStrategy {
     private final TemplateEngine templateEngine;
     private final EmailService emailService;
 
